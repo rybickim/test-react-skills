@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import usersData from '../data/users.json';
 import { AvatarGenerator } from 'random-avatar-generator';
+import { Route } from 'react-router-dom';
 
 const generator = new AvatarGenerator();
 
@@ -35,19 +35,21 @@ const Catchphrase = styled.p`
 `
 
 function User (props) {
-    let { name, username, email, phone, website, company } = props.data || usersData[0];
+    const { id, name, username, email, phone, website, company } = props.data;
 
     return (
-        <UserBox>
-            <UserAvatar src={generator.generateRandomAvatar()} alt="generated avatar"></UserAvatar>
-            <h1>{name}</h1>
-            <UserParagraph><b>Username:</b> {username}</UserParagraph>
-            <UserParagraph><b>E-mail:</b> {email}</UserParagraph>
-            <UserParagraph><b>Phone:</b> {phone}</UserParagraph>
-            <UserParagraph><b>Website:</b> {website}</UserParagraph>
-            <UserParagraph><b>Company:</b> {company.name}</UserParagraph>
-            <Catchphrase><i>{company.catchPhrase}</i></Catchphrase>
-        </UserBox>
+        <Route render={({ history }) => (
+            <UserBox onClick={() => history.push(`/user/${id}`)}>
+                <UserAvatar src={generator.generateRandomAvatar()} alt="generated avatar"></UserAvatar>
+                <h1>{name}</h1>
+                <UserParagraph><b>Username:</b> {username}</UserParagraph>
+                <UserParagraph><b>E-mail:</b> {email}</UserParagraph>
+                <UserParagraph><b>Phone:</b> {phone}</UserParagraph>
+                <UserParagraph><b>Website:</b> {website}</UserParagraph>
+                <UserParagraph><b>Company:</b> {company.name}</UserParagraph>
+                <Catchphrase><i>{company.catchPhrase}</i></Catchphrase>
+            </UserBox>
+        )} />
     );
 }
 
