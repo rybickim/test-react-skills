@@ -1,8 +1,21 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import { MemoryRouter } from "react-router-dom";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('renders user at route /', () => {
+  render(
+    <MemoryRouter initialEntries={['/']}>
+      <App />
+    </MemoryRouter>);
+  const userElement = screen.getByText('user');
+  expect(userElement).toBeInTheDocument();
+});
+
+test('renders user at route /user/:id', () => {
+  render(
+    <MemoryRouter initialEntries={['/user/1']}>
+      <App />
+    </MemoryRouter>);
+  const userElement = screen.getByText('user');
+  expect(userElement).toBeInTheDocument();
 });
