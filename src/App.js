@@ -21,10 +21,6 @@ class App extends React.Component {
     fetch('https://jsonplaceholder.typicode.com/users?_start=0&_limit=8')
       .then(res => res.json())
       .then(json => this.setState({ users: json }));
-
-    fetch('https://jsonplaceholder.typicode.com/users?_start=0&_limit=40')
-      .then(res => res.json())
-      .then(json => this.setState({ posts: json }));
   }
 
   render() {

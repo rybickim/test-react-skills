@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
 import { Route } from 'react-router-dom';
+import PostTile from '../posttile/PostTile';
 
 const UserBox = styled.div`
   display: grid;
@@ -60,13 +61,16 @@ const PostsList = styled.ul`
   border-radius: 3px;
   background: #efe9df;
   margin-top: 1em;
+  list-style: none;
+  padding-left: 0;
 `
 
 class UserPage extends React.Component {
   constructor() {
     super()
     this.state = {
-      user: {}
+      user: {},
+      posts: []
     }
   }
 
@@ -76,11 +80,20 @@ class UserPage extends React.Component {
     fetch(`https://jsonplaceholder.typicode.com/users/${params.id}`)
       .then(res => res.json())
       .then(json => this.setState({ user: json }));
+
+    fetch('https://jsonplaceholder.typicode.com/posts?_start=0&_limit=5')
+      .then(res => res.json())
+      .then(json => this.setState({ posts: json }));
   }
 
   render() {
     const { name } = this.state.user;
 
+    const items = []
+
+    for (let post of this.state.posts) {
+        items.push(<PostTile key={post.id} title={post.title}></PostTile>);
+    }
 
     return (
       <Route render={({ history }) => (
@@ -88,7 +101,9 @@ class UserPage extends React.Component {
         <GoBackButton onClick={() => history.goBack()}></GoBackButton>
         <UserName>{name}</UserName>
         <AddNewPostButton><b>Add new post</b></AddNewPostButton>
-        <PostsList></PostsList>
+        <PostsList>
+          {items}
+        </PostsList>
       </UserBox>
       )} />
     );
