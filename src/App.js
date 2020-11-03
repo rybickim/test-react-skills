@@ -4,6 +4,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import PostPage from './postpage/PostPage';
 import UserPage from './userpage/UserPage';
 import UserList from './userlist/UserList';
 import React from 'react';
@@ -29,8 +30,8 @@ class App extends React.Component {
           <header className="App-header">
             <Router>
               <Switch>
-                <Route path="/user/:id" component={UserPage}>
-                </Route>
+                <Route path="/user/:id/:postId" component={PostPage} />
+                <Route path="/user/:id" component={UserPage} />
                 <Route path="/">
                   <UserList users={this.state.users}></UserList>
                 </Route>

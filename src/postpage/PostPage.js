@@ -7,6 +7,7 @@ const UserBox = styled.div`
   display: grid;
   grid-template-columns: 2fr 3fr 2fr;
   grid-template-rows: 1fr 3fr 1fr;
+  grid-gap: 2rem;
   background: lightblue;
   border-radius: 3px;
   font-family: sans-serif;
@@ -37,15 +38,15 @@ const UserName = styled.h1`
   margin-top: 2rem;
 `
 
-const AddNewPostButton = styled.button`
-  grid-area: 2 / 3 / 2 / 3;
+const ShowCommentsButton = styled.button`
+  grid-area: 3 / 2 / 3 / 3;
   font-size: 2vw;
   background: dodgerblue;
   font-family: sans-serif;
   border: none;
   border-radius: 3px;
   margin: 3rem;
-  width: 8.5em;
+  width: 10em;
   height: 2em;
   color: white;
   justify-self: center;
@@ -55,22 +56,22 @@ const AddNewPostButton = styled.button`
   }
 `
 
-const PostsList = styled.ul`
+const PostContent = styled.div`
   grid-area: 2 / 2 / 2 / 3;
-  border: none;
-  border-radius: 3px;
-  background: #efe9df;
-  margin-top: 1em;
-  list-style: none;
-  padding-left: 0;
 `
 
-class UserPage extends React.Component {
+const PostBody = styled.div`
+  margin-top: 2rem;
+  background: #efe9df;
+  padding: 2rem;
+`
+
+class PostPage extends React.Component {
   constructor() {
     super()
     this.state = {
       user: {},
-      posts: []
+      post: {}
     }
   }
 
@@ -81,33 +82,29 @@ class UserPage extends React.Component {
       .then(res => res.json())
       .then(json => this.setState({ user: json }));
 
-    fetch('https://jsonplaceholder.typicode.com/posts?_start=0&_limit=5')
+    fetch(`https://jsonplaceholder.typicode.com/posts/${params.postId}`)
       .then(res => res.json())
-      .then(json => this.setState({ posts: json }));
+      .then(json => this.setState({ post: json }));
   }
 
   render() {
-    const { id: userId, name } = this.state.user;
-
-    const items = []
-
-    for (let post of this.state.posts) {
-        items.push(<PostTile key={post.id} title={post.title} postId={post.id} userId={userId}></PostTile>);
-    }
+    const { name } = this.state.user;
+    const { title, body } = this.state.post;
 
     return (
       <Route render={({ history }) => (
         <UserBox>
         <GoBackButton onClick={() => history.goBack()}></GoBackButton>
         <UserName>{name}</UserName>
-        <AddNewPostButton><b>Add new post</b></AddNewPostButton>
-        <PostsList>
-          {items}
-        </PostsList>
+        <ShowCommentsButton><b>Show comments</b></ShowCommentsButton>
+        <PostContent>
+            <div><b>{title}</b></div>
+            <PostBody>{body}</PostBody>
+        </PostContent>
       </UserBox>
       )} />
     );
   }
 }
 
-export default UserPage;
+export default PostPage;

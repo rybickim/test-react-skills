@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Route } from 'react-router-dom';
 
 const PostBox = styled.div`
   background: #cfd9df;
@@ -40,11 +41,14 @@ const PostTitle = styled.span`
 
 
 const PostTile = (props) => {
+    const id = 1
     return (
-        <PostBox>
-            <CloseButton><b>x</b></CloseButton>
-            <PostTitle>{props.title}</PostTitle>
-        </PostBox>
+        <Route render={({ history }) => (
+             <PostBox onClick={() => history.push(`/user/${props.userId}/${props.postId}`)}>
+                <CloseButton><b>x</b></CloseButton>
+                <PostTitle>{props.title}</PostTitle>
+            </PostBox>
+        )} />
     );
 }
 
