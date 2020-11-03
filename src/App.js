@@ -17,9 +17,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/users')
+    fetch('https://jsonplaceholder.typicode.com/users?_start=0&_limit=8')
       .then(res => res.json())
-      .then(json => this.setState({ users: json.slice(0,8) }));
+      .then(json => this.setState({ users: json }));
   }
 
   render() {
